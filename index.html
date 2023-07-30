@@ -503,8 +503,10 @@
         },
 
         async searchLP() {
-          let contract = new ethers.Contract(this.LPAddress, this.LPABI, this.signer);
 
+          let contract = new ethers.Contract("合约地址", "合约ABI,区块链浏览器中可以复制", "signer,操作对象,可以是钱包提供者可以是创建私钥对象");
+          // 异步调用,获取总数量          
+          await this.contract._tTotal()
 
         },
         async test() {
@@ -522,7 +524,7 @@
           // console.log("当前燃料价格", gas);
 
           this.signer = this.provider.getSigner();
-          this.contractObject = new ethers.Contract(this.contractAddr, this.ABI, this.signer);
+          this.contractObject = new ethers.Contract(this.Addr, this.ABI, this.signer);
 
 
 
@@ -568,10 +570,14 @@
               await this.callContract("renounceOwnership", [])
               break;
             case 1:
-              await this.callContract("setOpenStatus", [this.isOpen])
+              // await this.callContract("setOpenStatus", [this.isOpen])
+              console.log(this.isOpen)
+              await this.contractObject.setOpenStatus(this.isOpen == 'true' ? true : false)
               break;
             case 2:
-              await this.callContract("setBlackAddress", [this.blackAddress, this.isBlack])
+              // await this.callContract("setBlackAddress", [this.blackAddress, this.isBlack])
+              console.log(this.isBlack)
+              await this.contractObject.setBlackAddress(this.blackAddress, this.isBlack == 'true' ? true : false)
               break;
             case 3:
               await this.callContract("setfundAddress", [this.fundAddress])
@@ -592,7 +598,9 @@
               await this.callContract("setRecordBoardRate", [this.lockLPAddr, this.lockAddr, this.lockNum])
               break;
             case 9:
-              await this.callContract("setSwapPairList", [this.LPAddress, this.isLPAddress])
+              console.log(this.isLPAddress)
+              await this.contractObject.setSwapPairList(this.LPAddress, this.isLPAddress == 'true' ? true : false)
+              // await this.callContract("setSwapPairList", [this.LPAddress, this.isLPAddress])
               break;
             case 10:
               await this.callContract("depositFee", [this.depositFeeAddr])
@@ -618,7 +626,7 @@
           // a[0]LP地址
           // a[1]是否开启
           // a[2]成员列表
-          // a[3]当前分红人员
+          // a[3]当前分红人员     
           // a[4]上一次分红总人数
           // a[5]最新分红金额
           // a[6]正在分红金额
